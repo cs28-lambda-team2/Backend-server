@@ -37,13 +37,18 @@ def move(request):
     nextRoomID = None
     if direction == "n":
         nextRoomID = room.n_to
+        print(room.n_to)
     elif direction == "s":
         nextRoomID = room.s_to
+        print(room.s_to)
     elif direction == "e":
         nextRoomID = room.e_to
+        print(room.e_to)
     elif direction == "w":
         nextRoomID = room.w_to
+        print(room.w_to)
     if nextRoomID is not None and nextRoomID > 0:
+        print("we got here")
         nextRoom = Room.objects.get(id=nextRoomID)
         player.currentRoom=nextRoomID
         player.save()
@@ -54,10 +59,10 @@ def move(request):
         #     pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} has walked {dirs[direction]}.'})
         # for p_uuid in nextPlayerUUIDs:
         #     pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
-        return JsonResponse({'name':player.user.username, 'title':nextRoom.title, 'description':nextRoom.description, 'players':players, 'error_msg':""}, safe=True)
+        return JsonResponse({'name':player.user.username, 'title':nextRoom.title, 'description':nextRoom.description, 'players':players, 'error_msg':"", 'current_room': nextRoom.id}, safe=True)
     else:
         players = room.playerNames(player_id)
-        return JsonResponse({'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'error_msg':"You cannot move that way."}, safe=True)
+        return JsonResponse({'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'current_room': room.id, 'error_msg':"You cannot move that way."}, safe=True)
 
 
 @csrf_exempt
@@ -65,3 +70,12 @@ def move(request):
 def say(request):
     # IMPLEMENT
     return JsonResponse({'error':"Not yet implemented"}, safe=True, status=500)
+
+@api_view(["GET"])
+def map(request):
+    all_rooms = Room.objects.all()
+    print(all_rooms[1])
+    res = {}
+    for i in all_rooms:
+        res[i.id] = {'x_pos': i.x, 'y_pos':i.y } # 'room_type':i.roomtype}
+    return JsonResponse(res)
