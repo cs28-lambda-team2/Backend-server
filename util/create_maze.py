@@ -148,12 +148,23 @@ for room in w.maze:
     print(room)
 
 """ Turn the X points into room objects, save them and link them together """
-titles = ["Cave"] * 1000
-descriptions = ["It's dark in here."] * 1000
-rooms = w.generate_rooms(titles, descriptions)
+A = ["Dingy Room", "Dull Room", "Stockroom", "Armory", "Storage Room", "Cave", "Corridor", "Hallway", "Tunnel"]
+B = ["Not much in this room. Continue your journey.", "A poorly lit room. Best not to spend too much time here", "A stockroom. Supplies fill the shelves.", "An abandoned armory. Rusted weapons hang on the walls.", "A Storage Room. There's not a lot of space to move about.", "It's dark", "It's cold", "It's quiet in here.", "It smells musty."]
+titles = []
+for x in range (0, 150):
+    titles.append(random.choice(A))
+
+descriptions2 = []
+
+for x in range (0, 150):
+    descriptions2.append(random.choice(B)) 
+
+rooms = w.generate_rooms(titles, descriptions2)
+
 
 """ make the player start in the first room """
 players=Player.objects.all()
 for p in players:
   p.currentRoom=rooms[1].id
   p.save()
+
