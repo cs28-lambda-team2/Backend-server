@@ -131,9 +131,9 @@ class World:
                             starting_room.connectRooms(outer_room, 'n')
                         if pointz[1] == 's':
                             starting_room.connectRooms(outer_room, 's')
-                        if pointz[1] == 's':
-                            starting_room.connectRooms(outer_room, 'e')
                         if pointz[1] == 'e':
+                            starting_room.connectRooms(outer_room, 'e')
+                        if pointz[1] == 'w':
                             starting_room.connectRooms(outer_room, 'w')
             """ add the room ID to the maze """              
             self.maze[starting_room.x][starting_room.y] = starting_room.id
@@ -148,9 +148,19 @@ for room in w.maze:
     print(room)
 
 """ Turn the X points into room objects, save them and link them together """
-titles = ["Cave"] * 1000
-descriptions = ["It's dark in here."] * 1000
+A = ["Dingy Room", "Dull Room", "Stockroom", "Armory", "Storage Room", "Cave", "Corridor", "Hallway", "Tunnel"]
+B = ["Not much in this room. Continue your journey.", "A poorly lit room. Best not to spend too much time here",
+               "A stockroom. Supplies fill the shelves.", "An abandoned armory. Rusted weapons hang on the walls.", "A Storage Room. There's not a lot of space to move about.",
+    "It's dark", "It's cold", "It's quiet in here.", "It smells musty."]
+titles = []
+for x in range (0, 1000):
+    titles.append(random.choice(A))
+descriptions = []
+for x in range (0, 1000):
+    descriptions.append(random.choice(B))
+    
 rooms = w.generate_rooms(titles, descriptions)
+
 
 """ make the player start in the first room """
 players=Player.objects.all()
